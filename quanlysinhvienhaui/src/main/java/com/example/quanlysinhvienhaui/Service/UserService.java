@@ -23,19 +23,22 @@ public class UserService implements IUserService{
     @Override
     public Boolean Login(User user) throws Exception {
         try {
-            Optional<User> optionalUser=userRepository.findByUsername(user.getUsername());
-            if(optionalUser.isPresent()){
-                User user1= optionalUser.get();
-                if(user1.getPassword().equals(user.getPassword())){
-                    return true;
-                }
-            }else {
-                return false;
-            }
-        }catch (Exception e){
-            throw new Exception(e);
-        }
 
-        return null;
+            Optional<User> optionalUser = userRepository.findByUsername(user.getUsername());
+
+
+            if (optionalUser.isPresent()) {
+                User foundUser = optionalUser.get();
+                return foundUser.getPassword().equals(user.getPassword());
+            }
+
+
+            return false;
+
+        } catch (Exception e) {
+
+            throw new Exception("Lỗi xảy ra trong quá trình đăng nhập: " + e.getMessage(), e);
+        }
     }
+
 }
