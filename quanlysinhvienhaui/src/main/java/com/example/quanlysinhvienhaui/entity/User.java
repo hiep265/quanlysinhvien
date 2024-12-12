@@ -1,22 +1,22 @@
 package com.example.quanlysinhvienhaui.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
-@Table(name = "user")
+@Table(name = "User")
 @Getter
 @Setter
 @NoArgsConstructor
 public class User {
     @Id
-    @Column(name = "UserID")
+    @Column(name = "UserID", updatable = false, nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int userId;
     @Column(name = "Username",nullable = false,unique = true)
     private String username;
@@ -24,6 +24,9 @@ public class User {
     private String password;
 
 
+
+    @OneToMany(mappedBy = "user" , cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<DangKy> dangKy;
 
 
 }

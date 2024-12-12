@@ -1,6 +1,7 @@
 package com.example.quanlysinhvienhaui.controller;
 
-import com.example.quanlysinhvienhaui.Service.UserService;
+import com.example.quanlysinhvienhaui.Service.user.UserService;
+import com.example.quanlysinhvienhaui.dto.response.ApiResponse;
 import com.example.quanlysinhvienhaui.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -10,14 +11,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("api/user")
+@RequestMapping("/api/user")
 public class UserController {
     @Autowired
     private UserService userService;
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody User user){
        User registerUser= userService.RegisterUser(user);
-        return ResponseEntity.ok("success");
+        return ResponseEntity.ok().body(new ApiResponse("register success",null));
     }
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody User user) throws Exception {

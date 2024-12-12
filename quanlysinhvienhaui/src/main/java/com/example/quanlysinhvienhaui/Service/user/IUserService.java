@@ -1,7 +1,6 @@
-package com.example.quanlysinhvienhaui.Service;
+package com.example.quanlysinhvienhaui.Service.user;
 
 import com.example.quanlysinhvienhaui.entity.User;
-import org.springframework.stereotype.Service;
 
 
 public interface IUserService {

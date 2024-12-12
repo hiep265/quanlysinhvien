@@ -1,4 +1,4 @@
-package com.example.quanlysinhvienhaui.Service;
+package com.example.quanlysinhvienhaui.Service.user;
 
 import com.example.quanlysinhvienhaui.entity.User;
 import com.example.quanlysinhvienhaui.repository.UserRepository;
@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class UserService implements IUserService{
+public class UserService implements IUserService {
     @Autowired
     private UserRepository userRepository;
     @Override
