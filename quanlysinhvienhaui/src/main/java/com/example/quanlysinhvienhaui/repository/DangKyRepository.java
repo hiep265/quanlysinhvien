@@ -8,4 +8,6 @@ import java.util.List;
 
 public interface DangKyRepository extends JpaRepository<DangKy, Integer> {
     List<DangKy> findByUser_Username(String username);
+    List<DangKy> findByHocPhan_hocKy(int hocKy);
+    List<DangKy> findByUser_UserId(int UserId);
 }

@@ -8,6 +8,7 @@ import com.example.quanlysinhvienhaui.dto.response.HocPhanDto;
 import com.example.quanlysinhvienhaui.entity.HocPhan;
 import com.example.quanlysinhvienhaui.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,7 +27,7 @@ public class HocPhanController {
             HocPhanDto hocPhanDto = hocPhanService.convertToDto(hocPhan);
             return ResponseEntity.ok().body(new ApiResponse("Thêm học phần thành công", hocPhanDto));
         } catch (ResourceNotFoundException e) {
-            return ResponseEntity.ok().body(new ApiResponse("Học phần môn này đã tồn tại", null));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse("Học phần môn này đã tồn tại", null));
         }
     }
 

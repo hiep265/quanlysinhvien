@@ -20,11 +20,6 @@ public class DangKy {
 
     private String tenGiaoVien;
 
-    private float TX1;
-
-    private float TX2;
-
-    private float diem;
     @ManyToOne
     @JoinColumn(name="user_id")
     private User user;
@@ -32,4 +27,10 @@ public class DangKy {
     @ManyToOne
     @JoinColumn(name="hocphan_id")
     private HocPhan hocPhan;
+
+    private float TX1;
+
+    private float TX2;
+
+    private float diem;
 }

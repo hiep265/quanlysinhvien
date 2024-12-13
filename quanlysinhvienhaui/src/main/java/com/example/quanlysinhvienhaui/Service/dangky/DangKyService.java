@@ -4,6 +4,7 @@ import com.example.quanlysinhvienhaui.dto.request.DangKyRequest;
 import com.example.quanlysinhvienhaui.dto.request.NhapDiemRequest;
 import com.example.quanlysinhvienhaui.dto.response.DangKyDto;
 import com.example.quanlysinhvienhaui.dto.response.HocPhanDto;
+import com.example.quanlysinhvienhaui.dto.response.MonHocDto;
 import com.example.quanlysinhvienhaui.dto.response.UserDto;
 import com.example.quanlysinhvienhaui.entity.DangKy;
 import com.example.quanlysinhvienhaui.entity.HocPhan;
@@ -35,6 +36,7 @@ public class DangKyService implements IDangKyService{
         HocPhan hocPhan = hocPhanRepository.findById(hocPhanID)
                 .orElseThrow(()->new ResourceNotFoundException("Mã học phần không hợp lệ"));
         DangKy dangKy = new DangKy();
+        dangKy.setTenGiaoVien(request.getTenGiaoVien());
         dangKy.setUser(user);
         dangKy.setHocPhan(hocPhan);
         return dangKyRepository.save(dangKy);
@@ -71,7 +73,9 @@ public class DangKyService implements IDangKyService{
             DangKyDto dangKyDto  = modelMapper.map(dangKy, DangKyDto.class);
             UserDto userDto = modelMapper.map(dangKy.getUser(), UserDto.class);
             dangKyDto.setUser(userDto);
+            MonHocDto monHocDto = modelMapper.map(dangKy.getHocPhan().getMonHoc(), MonHocDto.class);
             HocPhanDto hocPhanDto = modelMapper.map(dangKy.getHocPhan(), HocPhanDto.class);
+            hocPhanDto.setMonHocDto(monHocDto);
             dangKyDto.setHocPhan(hocPhanDto);
             return dangKyDto;
     }

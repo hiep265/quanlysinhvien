@@ -9,6 +9,7 @@ import com.example.quanlysinhvienhaui.entity.DangKy;
 import com.example.quanlysinhvienhaui.exception.ResourceNotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,7 +27,7 @@ public class DangKyController {
 
             return ResponseEntity.ok().body(new ApiResponse("Đăng ký 1 học phần thành công", dangKyDto));
         } catch (ResourceNotFoundException e) {
-            return ResponseEntity.ok().body(new ApiResponse(e.getMessage()+", Đăng ký học phần thất bại", null));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse(e.getMessage()+", Đăng ký học phần thất bại", null));
         }
     }
     @PostMapping("/add_result/{dangKyId}")
@@ -35,10 +36,19 @@ public class DangKyController {
             DangKyDto dangKyDto = dangKyService.nhapKetQuaHocPhan(dangKyId, request);
             return ResponseEntity.ok().body(new ApiResponse("Nhập điểm cho học phần thành công", dangKyDto));
         } catch (ResourceNotFoundException e) {
-            return ResponseEntity.ok().body(new ApiResponse(e.getMessage() + ", Nhập điểm học phần thất bại", null));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse(e.getMessage() + ", Nhập điểm học phần thất bại", null));
 
         }
     }
+    @DeleteMapping("/delete/{dangKyId}")
+    ResponseEntity<ApiResponse> HuyDangKy(@PathVariable int dangKyId ){
+        try {
+            dangKyService.HuyDangKyHocPhan(dangKyId);
+            return ResponseEntity.ok().body(new ApiResponse("Hủy đăng ký học phần thành công", null));
+        } catch (ResourceNotFoundException e) {
+            throw new RuntimeException(e);
+        }
 
+    }
 
 }

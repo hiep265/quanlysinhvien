@@ -8,13 +8,15 @@ public class DangKyDto {
 
     private String tenGiaoVien;
 
+    private UserDto user;
+
+    private HocPhanDto hocPhan;
+
     private float TX1;
 
     private float TX2;
 
     private float diem;
 
-    private UserDto user;
 
-    private HocPhanDto hocPhan;
 }
