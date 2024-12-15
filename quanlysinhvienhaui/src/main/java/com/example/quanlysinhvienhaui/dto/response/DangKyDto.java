@@ -18,5 +18,8 @@ public class DangKyDto {
 
     private float diem;
 
+    private boolean thanhToan;
+
+
 
 }

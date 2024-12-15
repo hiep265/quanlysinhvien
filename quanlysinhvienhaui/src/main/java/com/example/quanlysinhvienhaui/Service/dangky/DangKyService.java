@@ -39,6 +39,8 @@ public class DangKyService implements IDangKyService{
         dangKy.setTenGiaoVien(request.getTenGiaoVien());
         dangKy.setUser(user);
         dangKy.setHocPhan(hocPhan);
+        dangKy.setThanhToan(false);
+        user.setCongNo(user.getCongNo()+hocPhan.getSoTinChi()*600000);
         return dangKyRepository.save(dangKy);
     }
 

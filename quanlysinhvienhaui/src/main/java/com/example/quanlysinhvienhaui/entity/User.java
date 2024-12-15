@@ -23,7 +23,9 @@ public class User {
     @Column(name = "Password",nullable = false)
     private String password;
 
+    private float soDu;
 
+    private float congNo;
 
     @OneToMany(mappedBy = "user" , cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DangKy> dangKy;

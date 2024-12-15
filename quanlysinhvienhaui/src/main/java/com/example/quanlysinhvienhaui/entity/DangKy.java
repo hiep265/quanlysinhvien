@@ -33,4 +33,14 @@ public class DangKy {
     private float TX2;
 
     private float diem;
+
+    private boolean thanhToan;
+
+
+
+    public boolean getThanhToan() {
+        return this.thanhToan;
+    }
 }
+
+
