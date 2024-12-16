@@ -1,0 +1,21 @@
+.header{
+  display: flex;
+  background-color: lightblue;
+  height: 50px;
+  
+  
+}
+.header >li {
+  
+  margin-right: 30px;
+  list-style: none;
+}
+.header >li > .link{
+  text-decoration: none;
+  list-style: none;
+  font-size: 1.5rem;
+  
+}
+
+
+
