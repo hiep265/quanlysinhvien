@@ -10,6 +10,8 @@ import java.util.List;
 public interface IDangKyService {
     public DangKy DangKyHocPhan (String username, int hocPhanID, DangKyRequest request);
 
+    List<DangKyDto> DangKyChuaThanhToan(int UserID);
+
     List<DangKyDto> DanhSachHocPhanDangKy(String username);
 
     public void HuyDangKyHocPhan (int dangKyId);

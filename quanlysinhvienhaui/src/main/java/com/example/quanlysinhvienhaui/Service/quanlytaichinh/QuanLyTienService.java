@@ -47,6 +47,32 @@ public class QuanLyTienService implements IQuanLyTienService{
                 .dangKyDtos(dsDK)
                 .build();
     }
+    @Override
+    public String ThanhToanHocPhan(int userID, int dangKyID){
+        User user = userRepository.findById(userID)
+                .orElseThrow(()->new ResourceNotFoundException(" Có lỗi khi tìm người dùng"));
+        DangKy dangKy = dangKyRepository.findById(dangKyID)
+                .orElseThrow(()->new ResourceNotFoundException(" Có lỗi khi tìm học phần"));
+        if(dangKy.getThanhToan()){
+            return "Học phần này đã đươc thanh toán rồi";
+        }
+        float soDu = user.getSoDu()-(dangKy.getHocPhan().getSoTinChi()*600000);
+        if(soDu<0){
+            return "Tiền trong tài khoản không đủ hãy nạp thêm";
+        }
+        user.setSoDu(soDu);
+        float CongNo = user.getCongNo()-(dangKy.getHocPhan().getSoTinChi()*600000);
+        if(CongNo < 0 ){
+            CongNo = 0;
+        }
+        user.setCongNo(CongNo);
+        dangKy.setThanhToan(true);
+        dangKyRepository.save(dangKy);
+        userRepository.save(user);
+
+        return "Thanh toán học phần "+dangKy.getDangKyID()+" thành công";
+
+    }
 
     public DangKyDto convertToDto(DangKy dangKy){
         DangKyDto dangKyDto  = modelMapper.map(dangKy, DangKyDto.class);

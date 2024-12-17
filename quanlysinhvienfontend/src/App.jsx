@@ -1,17 +1,17 @@
 import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
-import KetQuaHP from "./components/KetQuaHP";
-import NapTien from "./components/NapTien";
-import QLTaiChinh from "./components/QLTaiChinh";
+import KetQuaHP from "./components/ketquahp/KetQuaHP";
+import NapTien from "./components/naptien/NapTien";
+import QLTaiChinh from "./components/qltaichinh/QLTaiChinh";
 import TrangChu from "./components/TrangChu";
-import Header from "./components/Header";
-import './App.css'
+import Header from "./components/header/Header";
+
 
 function App() {
   
 
   return (
     <Router>
-      <Header className="header"/>
+      <Header/>
       <div >
         <Routes>
           <Route path="/" element={<TrangChu/>}/>

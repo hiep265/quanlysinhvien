@@ -24,4 +24,14 @@ public class QuanLyTienController {
         }
 
     }
+
+    @PutMapping("/thanh_toan_hp_no/{userId}/{dangKyId}")
+    ResponseEntity<ApiResponse> ThanhToanHocPhanConNo(@PathVariable int userId, @PathVariable int dangKyId){
+        try {
+            String mess = quanLyTienService.ThanhToanHocPhan(userId, dangKyId);
+            return ResponseEntity.ok().body(new ApiResponse("Thanh toán học phần còn nợ", mess ));
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.ok().body(new ApiResponse(e.getMessage(), null));
+        }
+    }
 }

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "../NapTien.css"; 
+import "./NapTien.css"; 
 
 export default function NapTien() {
     const [username, setUsername] = useState("");
@@ -9,6 +9,7 @@ export default function NapTien() {
     const [error, setError] = useState("");
     const [dulieu, setDulieu] = useState(null);
     const [showModal, setShowModal] = useState(false);
+    const [hocphan, setHocphans] = useState(null)
     const [tien, setTien] = useState(0);
 
     const fetchUserDetails = async (userID) => {
@@ -41,15 +42,53 @@ export default function NapTien() {
             const loginData = await response.json();
             setUserID(loginData.data.userID);
             fetchUserDetails(loginData.data.userID);
+
+            const HP = await fetch(`http://localhost:8082/api/dang_ky/HP_No/${loginData.data.userID}`,
+                {
+                    method: "GET"
+                }
+            )
+            if(!HP.ok) throw new Error(`Lỗi lấy ds học phần: ${response.status}`);
+            const HPdata = await HP.json();
+            setHocphans(HPdata.data);
+
         } catch (err) {
             setError(err.message);
             console.error(err);
         }
     };
+    const handleThanhToan = async(dangKyID) => {
+        try {
+            const response = await fetch(`http://localhost:8082/api/tien/thanh_toan_hp_no/${userID}/${dangKyID}`, {
+                method: "PUT"
+            });
+    
+            if (!response.ok) {
+                throw new Error(`Lỗi thanh toán: ${response.status}`);
+            }
+    
+            const DL = await response.json();
+            var mess = DL.data;
+            alert(mess);
+    
+            
+            await fetchUserDetails(userID);
+            
+            const HP = await fetch(`http://localhost:8082/api/dang_ky/HP_No/${userID}`, { method: "GET" });
+            if (!HP.ok) throw new Error(`Lỗi lấy danh sách học phần: ${HP.status}`);
+            const HPdata = await HP.json();
+            setHocphans(HPdata.data);
+    
+        } catch (err) {
+            setError(err.message);
+            console.error(err);
+        }
+    };
+    
 
     const handleNapTien = async (e) => {
         e.preventDefault();
-        if(tien<0){
+        if(tien<0 && !/^\d+$/.test(tien)){
             alert("Tiền nạp không hợp lệ!!!");
             return ;
         }
@@ -113,6 +152,36 @@ export default function NapTien() {
             </form>
 
             {error && <div className="error-message">{error}</div>}
+                        {hocphan && hocphan.length > 0 && (
+                <div>
+                    <table title="Danh sách học phần chưa thanh toán">
+                        <thead>
+                            <tr>
+                                <th>Tên Học Phần</th>
+                                <th>Tên Giáo Viên</th>
+                                <th>TX1</th>
+                                <th>TX2</th>
+                                <th>Điểm cuối kì</th>
+                                <th>Số tín</th>
+                                <th>Thanh toán</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {hocphan.map((ket_qua) => (
+                                <tr key={ket_qua.dangKyID}>
+                                    <td>{ket_qua.dangKyID}</td>
+                                    <td>{ket_qua.tenGiaoVien}</td>
+                                    <td>{ket_qua.tx1}</td>
+                                    <td>{ket_qua.tx2}</td>
+                                    <td>{ket_qua.diem}</td>
+                                    <td>{ket_qua.hocPhan.soTinChi}</td>
+                                    <td><button onClick={()=>{handleThanhToan(ket_qua.dangKyID)}}>Thanh toán</button></td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            )}
 
             {user && (
                 <div className="user-info">
@@ -135,6 +204,7 @@ export default function NapTien() {
                     </div>
                 </div>
             )}
+            {}
 
             {showModal && (
                 <div className="modal">

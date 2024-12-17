@@ -13,6 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/dang_ky")
 @RequiredArgsConstructor
@@ -40,6 +42,17 @@ public class DangKyController {
 
         }
     }
+
+    @GetMapping("/HP_No/{userId}")
+    ResponseEntity<ApiResponse> HPChuaThanhToan(@PathVariable int userId){
+        List<DangKyDto> DS  = dangKyService.DangKyChuaThanhToan(userId);
+        if(!DS.isEmpty()) {
+            return ResponseEntity.ok().body(new ApiResponse("Danh sách học phần chưa thanh toán", DS));
+        }else{
+            return ResponseEntity.ok().body(new ApiResponse("Bạn đã thanh toán tất cả học phần", null));
+        }
+    }
+
     @DeleteMapping("/delete/{dangKyId}")
     ResponseEntity<ApiResponse> HuyDangKy(@PathVariable int dangKyId ){
         try {

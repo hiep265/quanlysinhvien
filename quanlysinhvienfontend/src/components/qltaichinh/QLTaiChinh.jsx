@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import "../QLTaiChinh.css"
+import "./QLTaiChinh.css"
 
 export default function QLTaiChinh() {
     const [users, setUsers] = useState([]); 

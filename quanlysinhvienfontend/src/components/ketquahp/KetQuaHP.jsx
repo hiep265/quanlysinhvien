@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import "../KetQuaHP.css";
+import "./KetQuaHP.css";
 export default function KetQuaHP() {
     const [users, setUsers] = useState([]);
     const [userID, setUserID] = useState("");
@@ -93,7 +93,7 @@ export default function KetQuaHP() {
                     <table className="result-table">
                         <thead>
                             <tr>
-                                <th>STT</th>
+                                
                                 <th>Tên Học Phần</th>
                                 <th>Tên Giáo Viên</th>
                                 <th>TX1</th>
@@ -105,7 +105,6 @@ export default function KetQuaHP() {
                         <tbody>
                             {hocki.map((ket_qua) => (
                                 <tr key={ket_qua.id}>
-                                    <td>{ket_qua.id}</td>
                                     <td>{ket_qua.tenHocPhan}</td>
                                     <td>{ket_qua.tenGiaoVien}</td>
                                     <td>{ket_qua.tx1}</td>

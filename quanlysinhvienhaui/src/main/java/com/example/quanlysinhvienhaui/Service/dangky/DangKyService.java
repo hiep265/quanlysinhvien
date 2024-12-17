@@ -43,7 +43,14 @@ public class DangKyService implements IDangKyService{
         user.setCongNo(user.getCongNo()+hocPhan.getSoTinChi()*600000);
         return dangKyRepository.save(dangKy);
     }
+    @Override
+    public List<DangKyDto> DangKyChuaThanhToan(int UserID){
+        List<DangKy> DS =  dangKyRepository.findByUser_UserId(UserID);
 
+               return DS.stream()
+                .filter((dangKy) -> !dangKy.getThanhToan()).
+                map((element) -> modelMapper.map(element, DangKyDto.class)).toList();
+    }
 
     @Override
     public List<DangKyDto> DanhSachHocPhanDangKy(String username){
