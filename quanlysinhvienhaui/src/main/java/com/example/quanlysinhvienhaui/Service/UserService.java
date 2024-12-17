@@ -21,24 +21,27 @@ public class UserService implements IUserService{
     }
 
     @Override
-    public Boolean Login(User user) throws Exception {
+    public User Login(User user) throws Exception {
         try {
-
+            // Tìm kiếm người dùng theo username
             Optional<User> optionalUser = userRepository.findByUsername(user.getUsername());
-
 
             if (optionalUser.isPresent()) {
                 User foundUser = optionalUser.get();
-                return foundUser.getPassword().equals(user.getPassword());
+                // Kiểm tra mật khẩu
+                if (foundUser.getPassword().equals(user.getPassword())) {
+                    return foundUser; // Đăng nhập thành công
+                } else {
+                    throw new Exception("Sai mật khẩu!"); // Thông báo sai mật khẩu
+                }
+            } else {
+                throw new Exception("Người dùng không tồn tại!"); // Thông báo người dùng không tồn tại
             }
-
-
-            return false;
-
         } catch (Exception e) {
-
+            // Ném ngoại lệ với thông báo chi tiết
             throw new Exception("Lỗi xảy ra trong quá trình đăng nhập: " + e.getMessage(), e);
         }
     }
+
 
 }

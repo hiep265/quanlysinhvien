@@ -6,6 +6,6 @@ import org.springframework.stereotype.Service;
 
 public interface IUserService {
     public User RegisterUser(User user);
-    public Boolean Login(User user) throws Exception;
+    public User Login(User user) throws Exception;
 
 }
