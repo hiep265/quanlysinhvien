@@ -1,8 +1,7 @@
 package com.example.quanlysinhvienhaui.Service.dangky;
 
-import com.example.quanlysinhvienhaui.dto.response.KetQuaDto;
+import com.example.quanlysinhvienhaui.dto.response.KetQuaResponse;
 import com.example.quanlysinhvienhaui.entity.DangKy;
-import com.example.quanlysinhvienhaui.entity.User;
 import com.example.quanlysinhvienhaui.exception.ResourceNotFoundException;
 import com.example.quanlysinhvienhaui.repository.DangKyRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,12 +14,12 @@ import java.util.List;
 public class KetQuaService implements IKetQuaService{
     private final DangKyRepository dangKyRepository;
     @Override
-    public KetQuaDto KetQuaMotHocPhan(int DangKyId, int UserId) {
+    public KetQuaResponse KetQuaMotHocPhan(int DangKyId, int UserId) {
         DangKy dangKy = dangKyRepository.findById(DangKyId)
                 .orElseThrow(()->new ResourceNotFoundException("Mã học phần đăng ký không hợp lệ!!!"));
         String tenHocPhan = dangKy.getHocPhan().getMonHoc().getTenMonHoc();
                 float TK = (float) (dangKy.getTX1()*0.2 + dangKy.getTX2()*0.2 + dangKy.getDiem()*0.6);
-        return KetQuaDto.builder()
+        return KetQuaResponse.builder()
                 .tenGiaoVien(dangKy.getTenGiaoVien())
                 .tenHocPhan(tenHocPhan)
                 .userName(dangKy.getUser().getUsername())
@@ -33,7 +32,7 @@ public class KetQuaService implements IKetQuaService{
     }
 
     @Override
-    public List<KetQuaDto> KetQuaMotHocKy(int HocKy, int UserId) {
+    public List<KetQuaResponse> KetQuaMotHocKy(int HocKy, int UserId) {
 
 
         return dangKyRepository.findByHocPhan_hocKy(HocKy)
@@ -41,7 +40,7 @@ public class KetQuaService implements IKetQuaService{
                    dangKy.getUser().getUserId()==UserId)
                 .map(dangKy -> {
                     float TK = (float) (dangKy.getTX1()*0.2 + dangKy.getTX2()*0.2 + dangKy.getDiem()*0.6);
-                    return KetQuaDto.builder()
+                    return KetQuaResponse.builder()
                             .tenGiaoVien(dangKy.getTenGiaoVien())
                             .tenHocPhan(dangKy.getHocPhan().getMonHoc().getTenMonHoc())
                             .userName(dangKy.getUser().getUsername())
@@ -58,10 +57,10 @@ public class KetQuaService implements IKetQuaService{
     public float GPA(int UserId) {
         List<DangKy> dsdangKy = dangKyRepository.findByUser_UserId(UserId);
 
-        List<KetQuaDto> ketQuaDtos = dsdangKy.stream()
+        List<KetQuaResponse> ketQuaResponses = dsdangKy.stream()
                 .map(dangKy -> {
                     float TK = (float) (dangKy.getTX1()*0.2 + dangKy.getTX2()*0.2 + dangKy.getDiem()*0.6);
-                    return KetQuaDto.builder()
+                    return KetQuaResponse.builder()
                             .tenGiaoVien(dangKy.getTenGiaoVien())
                             .tenHocPhan(dangKy.getHocPhan().getMonHoc().getTenMonHoc())
                             .userName(dangKy.getUser().getUsername())
@@ -73,8 +72,8 @@ public class KetQuaService implements IKetQuaService{
                 })
                 .toList();
 
-        double total = ketQuaDtos.stream().filter(ketQuaDto -> ketQuaDto.getTongKet()>=4)
-                .mapToDouble(KetQuaDto::getTongKet
+        double total = ketQuaResponses.stream().filter(ketQuaResponse -> ketQuaResponse.getTongKet()>=4)
+                .mapToDouble(KetQuaResponse::getTongKet
                 ).average().orElse(0);
 
 

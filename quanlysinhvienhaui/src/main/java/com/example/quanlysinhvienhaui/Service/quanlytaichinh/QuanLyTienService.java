@@ -22,7 +22,7 @@ public class QuanLyTienService implements IQuanLyTienService{
     private final UserRepository userRepository;
 
     @Override
-    public QuanLyTienDto quanLyTien(int userId) {
+    public QuanLyTienResponse quanLyTien(int userId) {
 
         User user  = userRepository.findById(userId)
                 .orElseThrow(()-> new ResourceNotFoundException("ID người dùng không hợp lệ"));
@@ -36,15 +36,15 @@ public class QuanLyTienService implements IQuanLyTienService{
         if(thanhToan<0){
             thanhToan = 0;
         }
-        List<DangKyDto> dsDK =  dangKyRepository.findByUser_UserId(userId)
+        List<DangKyResponse> dsDK =  dangKyRepository.findByUser_UserId(userId)
                 .stream()
                 .map(this::convertToDto).toList();
-        return QuanLyTienDto.builder()
+        return QuanLyTienResponse.builder()
                 .username(user.getUsername())
                 .congNo((float)TongTinNo*600000)
                 .soDu(user.getSoDu())
                 .canThanhToan(thanhToan)
-                .dangKyDtos(dsDK)
+                .dangKyResponses(dsDK)
                 .build();
     }
     @Override
@@ -74,15 +74,15 @@ public class QuanLyTienService implements IQuanLyTienService{
 
     }
 
-    public DangKyDto convertToDto(DangKy dangKy){
-        DangKyDto dangKyDto  = modelMapper.map(dangKy, DangKyDto.class);
-        UserDto userDto = modelMapper.map(dangKy.getUser(), UserDto.class);
-        dangKyDto.setUser(userDto);
-        MonHocDto monHocDto = modelMapper.map(dangKy.getHocPhan().getMonHoc(), MonHocDto.class);
-        HocPhanDto hocPhanDto = modelMapper.map(dangKy.getHocPhan(), HocPhanDto.class);
-        hocPhanDto.setMonHocDto(monHocDto);
-        dangKyDto.setHocPhan(hocPhanDto);
-        return dangKyDto;
+    public DangKyResponse convertToDto(DangKy dangKy){
+        DangKyResponse dangKyResponse = modelMapper.map(dangKy, DangKyResponse.class);
+        UserResponse userResponse = modelMapper.map(dangKy.getUser(), UserResponse.class);
+        dangKyResponse.setUser(userResponse);
+        MonHocResponse monHocResponse = modelMapper.map(dangKy.getHocPhan().getMonHoc(), MonHocResponse.class);
+        HocPhanResponse hocPhanResponse = modelMapper.map(dangKy.getHocPhan(), HocPhanResponse.class);
+        hocPhanResponse.setMonHocResponse(monHocResponse);
+        dangKyResponse.setHocPhan(hocPhanResponse);
+        return dangKyResponse;
     }
 
 

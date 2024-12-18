@@ -2,15 +2,17 @@ package com.example.quanlysinhvienhaui.dto.response;
 
 import lombok.Data;
 
+import java.time.LocalDate;
+
 @Data
-public class DangKyDto {
+public class DangKyResponse {
     private int dangKyID;
 
     private String tenGiaoVien;
 
-    private UserDto user;
+    private UserResponse user;
 
-    private HocPhanDto hocPhan;
+    private HocPhanResponse hocPhan;
 
     private float TX1;
 

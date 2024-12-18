@@ -2,7 +2,7 @@ package com.example.quanlysinhvienhaui.controller;
 
 import com.example.quanlysinhvienhaui.Service.quanlytaichinh.IQuanLyTienService;
 import com.example.quanlysinhvienhaui.dto.response.ApiResponse;
-import com.example.quanlysinhvienhaui.dto.response.QuanLyTienDto;
+import com.example.quanlysinhvienhaui.dto.response.QuanLyTienResponse;
 import com.example.quanlysinhvienhaui.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,8 +17,8 @@ public class QuanLyTienController {
     @GetMapping("/quan_ly/{userID}")
     ResponseEntity<ApiResponse> QuanLyTien(@PathVariable int userID){
         try {
-            QuanLyTienDto quanLyTienDto = quanLyTienService.quanLyTien(userID);
-            return ResponseEntity.ok().body( new ApiResponse("Thông tin tài chính: ", quanLyTienDto));
+            QuanLyTienResponse quanLyTienResponse = quanLyTienService.quanLyTien(userID);
+            return ResponseEntity.ok().body( new ApiResponse("Thông tin tài chính: ", quanLyTienResponse));
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.ok().body( new ApiResponse("Người dùng không hợp lệ", null));
         }

@@ -5,7 +5,7 @@ import lombok.Data;
 
 @AllArgsConstructor
 @Data
-public class NapTienDto {
+public class NapTienResponse {
     private String maGiaoDich;
     private String tinhTrang;
     private String loiNhan;

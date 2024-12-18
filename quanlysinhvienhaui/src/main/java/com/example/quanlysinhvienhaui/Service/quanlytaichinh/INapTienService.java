@@ -1,9 +1,9 @@
 package com.example.quanlysinhvienhaui.Service.quanlytaichinh;
 
 import com.example.quanlysinhvienhaui.dto.request.NapTienRequest;
-import com.example.quanlysinhvienhaui.dto.response.NapTienDto;
+import com.example.quanlysinhvienhaui.dto.response.NapTienResponse;
 
 
 public interface INapTienService {
-    public NapTienDto napTien(NapTienRequest request);
+    public NapTienResponse napTien(NapTienRequest request);
 }

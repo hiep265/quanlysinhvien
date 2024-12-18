@@ -2,17 +2,13 @@ package com.example.quanlysinhvienhaui.controller;
 
 import com.example.quanlysinhvienhaui.Service.user.UserService;
 import com.example.quanlysinhvienhaui.dto.response.ApiResponse;
-import com.example.quanlysinhvienhaui.dto.response.UserDto;
+import com.example.quanlysinhvienhaui.dto.response.UserResponse;
 import com.example.quanlysinhvienhaui.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/user")
@@ -30,7 +26,7 @@ public class UserController {
     public ResponseEntity<?> login(@RequestBody User user) {
         try {
 
-            UserDto login = userService.Login(user);
+            UserResponse login = userService.Login(user);
             if (login != null) {
                 return ResponseEntity.ok().body(new ApiResponse("login success", login));
             } else {
@@ -44,7 +40,7 @@ public class UserController {
 
     @GetMapping("/users")
     public ResponseEntity<ApiResponse> listUser() {
-        List<UserDto> ds = userService.DSUser();
+        List<UserResponse> ds = userService.DSUser();
         return ResponseEntity.ok().body(new ApiResponse("Danh sách user: ", ds));
     }
 }

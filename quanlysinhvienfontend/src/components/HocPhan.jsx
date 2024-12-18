@@ -51,7 +51,7 @@ export default function HocPhan() {
             {subjects.map((subject) => (
               <tr key={subject.hocPhanID}>
                 <td>{subject.hocPhanID}</td>
-                <td>{subject.monHocDto.tenMonHoc}</td>
+                <td>{subject.monHocResponse.tenMonHoc}</td>
                 <td>{subject.soTinChi}</td>
                 <td>{subject.hocKy}</td>
                 <td>{subject.namHoc}</td>

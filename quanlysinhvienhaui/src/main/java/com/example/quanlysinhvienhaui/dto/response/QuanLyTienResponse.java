@@ -7,12 +7,12 @@ import java.util.List;
 
 @Data
 @Builder
-public class QuanLyTienDto {
+public class QuanLyTienResponse {
     private String username;
     private float soDu;
     private float congNo;
     private float canThanhToan;
-    private List<DangKyDto> dangKyDtos;
+    private List<DangKyResponse> dangKyResponses;
 
     public void updateThanhToan(){
         this.canThanhToan  = this.congNo - this.soDu;

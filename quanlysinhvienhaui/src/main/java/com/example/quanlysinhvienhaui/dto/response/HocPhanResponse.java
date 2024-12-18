@@ -4,17 +4,19 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.time.Year;
 
 @Data
 @Getter
 @Setter
-public class HocPhanDto {
+public class HocPhanResponse {
 
     private int hocPhanID;
     private int hocKy;
     private int soTinChi;
     private Year namHoc;
-    private MonHocDto monHocDto;
+    private LocalDate lichThi;
+    private MonHocResponse monHocResponse;
 
 }

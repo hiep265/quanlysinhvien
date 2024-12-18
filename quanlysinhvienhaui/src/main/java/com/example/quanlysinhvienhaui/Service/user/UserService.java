@@ -1,6 +1,6 @@
 package com.example.quanlysinhvienhaui.Service.user;
 
-import com.example.quanlysinhvienhaui.dto.response.UserDto;
+import com.example.quanlysinhvienhaui.dto.response.UserResponse;
 import com.example.quanlysinhvienhaui.entity.User;
 import com.example.quanlysinhvienhaui.repository.UserRepository;
 import org.modelmapper.ModelMapper;
@@ -28,7 +28,7 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public UserDto Login(User user) throws Exception {
+    public UserResponse Login(User user) throws Exception {
 
             // Tìm kiếm người dùng theo username
             Optional<User> optionalUser = userRepository.findByUsername(user.getUsername());
@@ -37,7 +37,7 @@ public class UserService implements IUserService {
                 User foundUser = optionalUser.get();
                 // Kiểm tra mật khẩu
                 if (foundUser.getPassword().equals(user.getPassword())) {
-                    return modelMapper.map(foundUser,UserDto.class); // Đăng nhập thành công
+                    return modelMapper.map(foundUser, UserResponse.class); // Đăng nhập thành công
                 } else {
                     throw new Exception("Sai mật khẩu!"); // Thông báo sai mật khẩu
                 }
@@ -49,8 +49,8 @@ public class UserService implements IUserService {
 
 
     @Override
-    public List<UserDto> DSUser() {
-        return userRepository.findAll().stream().map((element) -> modelMapper.map(element, UserDto.class)).collect(Collectors.toList());
+    public List<UserResponse> DSUser() {
+        return userRepository.findAll().stream().map((element) -> modelMapper.map(element, UserResponse.class)).collect(Collectors.toList());
     }
 
 }

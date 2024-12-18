@@ -102,7 +102,7 @@ export default function KetQuaHP() {
                         <table className="table table-bordered table-hover table-striped">
                             <thead className="table-primary">
                                 <tr>
-                                    <th className="text-center">Tên Học Phần</th>
+                                    <th className="text-center">Mã Học Phần</th>
                                     <th className="text-center">Tên Giáo Viên</th>
                                     <th className="text-center">TX1</th>
                                     <th className="text-center">TX2</th>

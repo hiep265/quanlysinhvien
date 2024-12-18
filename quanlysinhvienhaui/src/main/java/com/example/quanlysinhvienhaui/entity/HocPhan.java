@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Value;
 
+import java.time.LocalDate;
 import java.time.Year;
 import java.util.List;
 
@@ -26,7 +27,7 @@ public class HocPhan {
 
     private Year namHoc;
 
-
+    private LocalDate lichThi;
 
     @OneToOne
     @JoinColumn(name="monhoc_id")

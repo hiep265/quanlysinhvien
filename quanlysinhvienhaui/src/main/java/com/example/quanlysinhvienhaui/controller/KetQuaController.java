@@ -2,8 +2,7 @@ package com.example.quanlysinhvienhaui.controller;
 
 import com.example.quanlysinhvienhaui.Service.dangky.IKetQuaService;
 import com.example.quanlysinhvienhaui.dto.response.ApiResponse;
-import com.example.quanlysinhvienhaui.dto.response.KetQuaDto;
-import com.example.quanlysinhvienhaui.entity.DangKy;
+import com.example.quanlysinhvienhaui.dto.response.KetQuaResponse;
 import com.example.quanlysinhvienhaui.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,8 +20,8 @@ public class KetQuaController {
     @GetMapping("/ket_qua_1_hp/{DangKyId}/{UserId}")
     ResponseEntity<ApiResponse> KetQuaMotHocPhan(@PathVariable int DangKyId ,@PathVariable int UserId ){
         try {
-            KetQuaDto ketQuaDto = ketQuaService.KetQuaMotHocPhan(DangKyId, UserId);
-            return ResponseEntity.ok().body(new ApiResponse("Kết quả của học phần: ", ketQuaDto));
+            KetQuaResponse ketQuaResponse = ketQuaService.KetQuaMotHocPhan(DangKyId, UserId);
+            return ResponseEntity.ok().body(new ApiResponse("Kết quả của học phần: ", ketQuaResponse));
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse(e.getMessage(), null));
         }
@@ -31,8 +30,8 @@ public class KetQuaController {
     @GetMapping("/ket_qua_1_hoc_ky/{HocKy}/{UserId}")
     ResponseEntity<ApiResponse> KetQuaMotHocKy(@PathVariable int HocKy ,@PathVariable int UserId ){
         try {
-            List<KetQuaDto> dsketQuaDto = ketQuaService.KetQuaMotHocKy(HocKy, UserId);
-            return ResponseEntity.ok().body(new ApiResponse("Kết quả của học kỳ: ", dsketQuaDto));
+            List<KetQuaResponse> dsketQuaResponse = ketQuaService.KetQuaMotHocKy(HocKy, UserId);
+            return ResponseEntity.ok().body(new ApiResponse("Kết quả của học kỳ: ", dsketQuaResponse));
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse(e.getMessage(), null));
         }

@@ -1,6 +1,7 @@
 package com.example.quanlysinhvienhaui.controller;
 
 
+import com.example.quanlysinhvienhaui.dto.response.MonHocResponse;
 import com.example.quanlysinhvienhaui.entity.MonHoc;
 
 import org.springframework.http.ResponseEntity;
@@ -12,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.quanlysinhvienhaui.Service.monhoc.IMonHocService;
 import com.example.quanlysinhvienhaui.dto.request.ThemMonHocRequest;
 import com.example.quanlysinhvienhaui.dto.response.ApiResponse;
-import com.example.quanlysinhvienhaui.dto.response.MonHocDto;
 import com.example.quanlysinhvienhaui.exception.ResourceNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -31,8 +31,8 @@ public class MonHocController {
     public ResponseEntity<ApiResponse> ThemMonHoc (@RequestBody ThemMonHocRequest request){
         try {
             MonHoc monHoc =  monHocService.themMonHoc(request);
-            MonHocDto monHocDto = monHocService.convertToMonDto(monHoc);
-            return ResponseEntity.ok().body(new ApiResponse("Thêm một môn học thành công", monHocDto));
+            MonHocResponse monHocResponse = monHocService.convertToMonDto(monHoc);
+            return ResponseEntity.ok().body(new ApiResponse("Thêm một môn học thành công", monHocResponse));
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse(e.getMessage(),null));
         }
@@ -40,7 +40,7 @@ public class MonHocController {
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse> getMonHocById(@PathVariable int id) {
         try {
-            MonHocDto monHoc = monHocService.getMonHocById(id);
+            MonHocResponse monHoc = monHocService.getMonHocById(id);
             return ResponseEntity.ok().body(new ApiResponse("Môn học "+monHoc.getMonHocID(), monHoc));
         } catch (Exception e) {
             return ResponseEntity.status(404).body(null);
@@ -49,7 +49,7 @@ public class MonHocController {
 
     @GetMapping("/all")
     public ResponseEntity<ApiResponse> DanhSachMonHoc(){
-        List<MonHocDto> DS =monHocService.danhSachMonHoc();
+        List<MonHocResponse> DS =monHocService.danhSachMonHoc();
         return ResponseEntity.ok().body(new ApiResponse("Danh sách môn học", DS));
     }
 

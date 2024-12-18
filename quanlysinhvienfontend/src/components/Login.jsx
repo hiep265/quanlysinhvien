@@ -31,7 +31,7 @@ export default function Login() {
 
       const data = await response.json();
       console.log("Login successful:", data);
-
+      await localStorage.setItem('username', data.data.username);
       await localStorage.setItem('userID', data.data.userID);
       navigate("/TrangChu");
     } catch (err) {

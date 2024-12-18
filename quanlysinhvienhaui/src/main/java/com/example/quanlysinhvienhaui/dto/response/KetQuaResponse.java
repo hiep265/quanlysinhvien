@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class KetQuaDto {
+public class KetQuaResponse {
     private String userName;
 
     private String tenHocPhan;

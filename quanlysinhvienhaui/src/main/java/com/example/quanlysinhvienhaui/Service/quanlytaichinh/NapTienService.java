@@ -1,7 +1,7 @@
 package com.example.quanlysinhvienhaui.Service.quanlytaichinh;
 
 import com.example.quanlysinhvienhaui.dto.request.NapTienRequest;
-import com.example.quanlysinhvienhaui.dto.response.NapTienDto;
+import com.example.quanlysinhvienhaui.dto.response.NapTienResponse;
 
 import com.example.quanlysinhvienhaui.entity.User;
 import com.example.quanlysinhvienhaui.exception.ResourceNotFoundException;
@@ -26,7 +26,7 @@ public class NapTienService implements INapTienService {
     private final ExecutorService executorService = Executors.newFixedThreadPool(10);
 
     @Override
-    public NapTienDto napTien(NapTienRequest request) {
+    public NapTienResponse napTien(NapTienRequest request) {
         User user  = userRepository.findById(request.getUserID())
                 .orElseThrow(()-> new ResourceNotFoundException("ID người dùng không hợp lệ"));
         int TongTinNo  = dangKyRepository.findByUser_UserId(request.getUserID()).stream()
@@ -38,34 +38,34 @@ public class NapTienService implements INapTienService {
         float SoTienCanThanhToan = TongTinNo*600000;
 
         try {
-            Future<NapTienDto> future = executorService.submit(()->xuLyThanhToan(request));
+            Future<NapTienResponse> future = executorService.submit(()->xuLyThanhToan(request));
 
             return future.get();
         } catch (InterruptedException | ExecutionException e) {
             Thread.currentThread().interrupt();
-            return new NapTienDto(null, "THẤT BẠI", "Lỗi trong quá trình giao dịch: " + e.getMessage());
+            return new NapTienResponse(null, "THẤT BẠI", "Lỗi trong quá trình giao dịch: " + e.getMessage());
         }
     }
 
-    private NapTienDto xuLyThanhToan(NapTienRequest request){
+    private NapTienResponse xuLyThanhToan(NapTienRequest request){
         try{
             xacThucThanhToan(request);
             Thread.sleep(3000);
         }catch(InterruptedException e){
             Thread.currentThread().interrupt();
-            return new NapTienDto(null, "FAILED", "Thanh toán bị tạm dừng");
+            return new NapTienResponse(null, "FAILED", "Thanh toán bị tạm dừng");
         }catch (IllegalArgumentException e){
-            return new NapTienDto(null, "FAILED", e.getMessage());
+            return new NapTienResponse(null, "FAILED", e.getMessage());
         }
         String maGiaoDich = UUID.randomUUID().toString();
         boolean paymentSuccess = Math.random() > 0.2;
         if(paymentSuccess){
             capNhatTaiKhoan(request);
             thongBao(request.getUserID(), "Nạp tiền thành công vào tài khoản");
-            return new NapTienDto(maGiaoDich, "THÀNH CÔNG", "Giao dịch thực hiện thành công");
+            return new NapTienResponse(maGiaoDich, "THÀNH CÔNG", "Giao dịch thực hiện thành công");
         }else{
             thongBao(request.getUserID(), "Không nạp tiền thành công vào tài khoản");
-            return new NapTienDto(maGiaoDich, "THẤT BẠI", "Giao dịch thực hiện không thành công");
+            return new NapTienResponse(maGiaoDich, "THẤT BẠI", "Giao dịch thực hiện không thành công");
         }
     }
 

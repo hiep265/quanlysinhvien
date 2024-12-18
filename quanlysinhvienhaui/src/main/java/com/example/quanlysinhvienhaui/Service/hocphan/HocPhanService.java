@@ -1,8 +1,8 @@
 package com.example.quanlysinhvienhaui.Service.hocphan;
 
 import com.example.quanlysinhvienhaui.dto.request.ThemHocPhanRequest;
-import com.example.quanlysinhvienhaui.dto.response.HocPhanDto;
-import com.example.quanlysinhvienhaui.dto.response.MonHocDto;
+import com.example.quanlysinhvienhaui.dto.response.HocPhanResponse;
+import com.example.quanlysinhvienhaui.dto.response.MonHocResponse;
 import com.example.quanlysinhvienhaui.entity.HocPhan;
 import com.example.quanlysinhvienhaui.entity.MonHoc;
 import com.example.quanlysinhvienhaui.exception.ResourceNotFoundException;
@@ -13,6 +13,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -23,12 +24,13 @@ public class HocPhanService implements IHocPhanService {
     private final ModelMapper modelMapper;
     private final MonHocRepository monHocRepository;
     @Override
-    public List<HocPhanDto> XemCacHocPhan() {
+    public List<HocPhanResponse> XemCacHocPhan() {
         return hocPhanRepository.findAll().stream().map((hocphan)->{
             return convertToDto(hocphan);
     }).toList();
 
     }
+
 
     @Override
     @Transactional
@@ -47,13 +49,23 @@ public class HocPhanService implements IHocPhanService {
         return hocPhanRepository.save(hocPhan);
 
     }
-    @Override
-    public HocPhanDto convertToDto(HocPhan hocPhan){
-        HocPhanDto hocPhanDto  = modelMapper.map(hocPhan, HocPhanDto.class);
 
-        MonHocDto monHoc = modelMapper.map(hocPhan.getMonHoc(), MonHocDto.class);
-        hocPhanDto.setMonHocDto(monHoc);
-        return hocPhanDto;
+    @Override
+    public HocPhanResponse NhapLichThi(int hocPhanID, LocalDate lichThi){
+        HocPhan hocPhan = hocPhanRepository.findById(hocPhanID)
+                .orElseThrow(()-> new ResourceNotFoundException("Không tìm thấy học phần"));
+        hocPhan.setLichThi(lichThi);
+        hocPhanRepository.save(hocPhan);
+        return convertToDto(hocPhan);
+    }
+
+    @Override
+    public HocPhanResponse convertToDto(HocPhan hocPhan){
+        HocPhanResponse hocPhanResponse = modelMapper.map(hocPhan, HocPhanResponse.class);
+
+        MonHocResponse monHoc = modelMapper.map(hocPhan.getMonHoc(), MonHocResponse.class);
+        hocPhanResponse.setMonHocResponse(monHoc);
+        return hocPhanResponse;
     }
 
 
