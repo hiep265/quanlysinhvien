@@ -1,40 +1,57 @@
 package com.example.quanlysinhvienhaui.controller;
 
-import com.example.quanlysinhvienhaui.Service.MonHocService;
+
 import com.example.quanlysinhvienhaui.entity.MonHoc;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.quanlysinhvienhaui.Service.monhoc.IMonHocService;
+import com.example.quanlysinhvienhaui.dto.request.ThemMonHocRequest;
+import com.example.quanlysinhvienhaui.dto.response.ApiResponse;
+import com.example.quanlysinhvienhaui.dto.response.MonHocDto;
+import com.example.quanlysinhvienhaui.exception.ResourceNotFoundException;
+import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+
+
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/monhoc")
+@RequestMapping("/api/mon_hoc")
+@AllArgsConstructor
 public class MonHocController {
+    private final IMonHocService monHocService;
 
-    @Autowired
-    private MonHocService monHocService;
-
-    @GetMapping("/all")
-    public ResponseEntity<List<MonHoc>> getAllMonHoc() {
+    @PostMapping("/add")
+    public ResponseEntity<ApiResponse> ThemMonHoc (@RequestBody ThemMonHocRequest request){
         try {
-            List<MonHoc> monHocs = monHocService.getAllMonHoc();
-            return ResponseEntity.ok(monHocs);
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body(null);
+            MonHoc monHoc =  monHocService.themMonHoc(request);
+            MonHocDto monHocDto = monHocService.convertToMonDto(monHoc);
+            return ResponseEntity.ok().body(new ApiResponse("Thêm một môn học thành công", monHocDto));
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse(e.getMessage(),null));
         }
     }
-
     @GetMapping("/{id}")
-    public ResponseEntity<MonHoc> getMonHocById(@PathVariable String id) {
+    public ResponseEntity<ApiResponse> getMonHocById(@PathVariable int id) {
         try {
-            MonHoc monHoc = monHocService.getMonHocById(id);
-            return ResponseEntity.ok(monHoc);
+            MonHocDto monHoc = monHocService.getMonHocById(id);
+            return ResponseEntity.ok().body(new ApiResponse("Môn học "+monHoc.getMonHocID(), monHoc));
         } catch (Exception e) {
             return ResponseEntity.status(404).body(null);
         }
     }
+
+    @GetMapping("/all")
+    public ResponseEntity<ApiResponse> DanhSachMonHoc(){
+        List<MonHocDto> DS =monHocService.danhSachMonHoc();
+        return ResponseEntity.ok().body(new ApiResponse("Danh sách môn học", DS));
+    }
+
 }
+
