@@ -1,4 +1,4 @@
-package com.example.quanlysinhvienhaui.config;
+package com.example.quanlysinhvienhaui.security.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
